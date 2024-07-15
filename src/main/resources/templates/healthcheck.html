@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link href="common.css" rel="stylesheet">
+<link href="guestbook.css" rel="stylesheet">
+
+<title>방명록 (K8S)</title>
+</head>
+<body>
+	<div class="guestbook list displaynone" style="display: block;">
+		<ul class="cont">
+			<li>
+				<p class="memo" th:text="'HOST : ' + ${host.name}"></p>
+				<p class="memo" th:text="'IP : ' + ${host.ip}"></p>
+				<p class="memo" th:text="'User-Agent : ' + ${userAgent}"></p>
+			</li>
+		</ul>
+	</div>
+</body>
+</html>

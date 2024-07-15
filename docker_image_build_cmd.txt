@@ -1,0 +1,38 @@
+cd ~/workspace/guestbook_MYSQL
+mvn clean package -Dmaven.test.skip=true
+docker image build -t yu3papa/aws_guestbook:1.0 .
+
+### 환경변수 정리
+MYSQL_IP=127.0.0.1
+MYSQL_PORT=3306
+MYSQL_DATABASE=guestbook
+MYSQL_USER=root
+MYSQL_PASSWORD=education
+SCOUTER_IP=15.164.159.71 <-- 이 환경변수가 있을때만 javaagent 옵션적용, 없으면 그냥 실행
+S3BUCKET_ID=coordi-20210220-guestbook <-- 이 환경변수가 있을때만 S3 Bucket으로 파일 업로드
+CONTEXT_PATH=/
+	  
+### 컨테이너 실행 샘플
+# guestbookapp
+docker container run -d \
+      --name=guestbookapp \
+      --restart=always \
+      --network=host \
+      -e MYSQL_IP=guestbook-mysql.c7yyaicktpcc.ap-northeast-2.rds.amazonaws.com \
+      -e MYSQL_PORT=3306 \
+      -e MYSQL_DATABASE=guestbook \
+      -e MYSQL_USER=root \
+      -e MYSQL_PASSWORD=education \
+      -e SCOUTER_IP=15.164.159.71 \
+      -e S3BUCKET_ID=coordi-20210220-guestbook \
+      -e CONTEXT_PATH=/ \
+      yu3papa/aws_guestbook:1.0
+
+# guestbookdb
+docker container run -d \
+      --name=guestbookdb \
+      --restart=always \
+      --network=host \
+      -e MYSQL_ROOT_PASSWORD=edu \
+      -e MYSQL_DATABASE=guestbook \
+      mysql:5.7.31
